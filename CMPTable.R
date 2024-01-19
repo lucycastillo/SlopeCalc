@@ -48,7 +48,7 @@ library(spatialEco)
 
 # Please select a work space or folder where both the inputs and outputs are stored
 
-workspace.name=choose.dir(default = "", caption = "Select folder that contains watershed data")
+workspace.name=choose.dir(default = "", caption = "Select folder that contains data")
 
 wd=setwd(workspace.name)
 
@@ -83,7 +83,7 @@ names(SLCv4Polygon)
 
 cmptable <- matrix(data = NA, ncol = 4,byrow = TRUE)
 
-colnames(cmptable) <- c('SL','CMP','PCT','SoilID')
+colnames(cmptable) <- c('SL', 'CMP', 'PCT', 'SoilID')
 
 cmptable<-data.frame(cmptable)
 
