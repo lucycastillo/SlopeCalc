@@ -26,7 +26,7 @@ library(ggplot2)
 
 # Please select a work space or folder where both the inputs and outputs are stored
 
-workspace.name = choose.dir(default = "", caption = "Select folder that contains watershed data")
+workspace.name = choose.dir(default = "", caption = "Select folder that contains data")
 
 wd = setwd(workspace.name)
 
@@ -38,8 +38,6 @@ polygon.file.path <- getwd()
 
 GGSoils <- raster("GGSoilTypeTest250m.tif")
 
- 
-
 slope <- raster("slope_testdata_250m_lcc_wgs84.tif")
 
  
@@ -50,18 +48,13 @@ cmptab <- data.frame(cmptab)
 
  
 
-# Add new column names for a to be summarized attribute e.g. slope
+# Add new column names for attributes e.g. slope
 
 cmptab <- cmptab %>% mutate(slopeQ1 = NA, slopeMedian = NA, slopeQ3 = NA, slopeMean = NA, SLOPECLASS = NA)
 
- 
 
-#WORKS
 
 SLCv4Polygon = shapefile("slc_v4_testdata_lcc_wgs84.shp")
-
- 
-
 newcmptab <- cmptab[0, ]
 
  
@@ -76,15 +69,9 @@ for (i in 1:nrow(coordinates(SLCv4Polygon))) {
 
   boundary.raster = rasterize(SLCv4Polygon[i,], GGSoils.in.a.polygon)
 
- 
-
   GGSoils.masked <- mask(GGSoils.in.a.polygon, mask = boundary.raster)
 
   slope.masked <- mask(slope.in.a.polygon, mask = boundary.raster)
-
- 
-
- 
 
   GGSoils.masked <- GGSoils.masked[GGSoils.masked>0]
 
@@ -118,24 +105,15 @@ for (i in 1:nrow(coordinates(SLCv4Polygon))) {
 
     newcmptab <- rbind(newcmptab, temptab)
 
-   
-
   }
 
 }
 
- 
-
-newcmptab
-
 #create new col SLOPE which letter grades slope % based on SLC cmp table
-
- 
 
 for (k in 1:nrow(newcmptab)) {
 
  
-
   if (newcmptab$slopeMean[k] <= 3)
 
   {
@@ -145,7 +123,6 @@ for (k in 1:nrow(newcmptab)) {
   }
 
  
-
   else if (newcmptab$slopeMean[k] <= 9) {
 
   newcmptab$SLOPE_CLASS[k] <- 'B' 
@@ -153,7 +130,6 @@ for (k in 1:nrow(newcmptab)) {
   }
 
  
-
   else if (newcmptab$slopeMean[k] <= 15){
 
   newcmptab$SLOPE_CLASS[k] <- 'C' 
@@ -188,11 +164,8 @@ for (k in 1:nrow(newcmptab)) {
 
   }
 
- 
 
 }
-
-newcmptab
 
  
 
